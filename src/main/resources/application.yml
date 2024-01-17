@@ -1,0 +1,41 @@
+
+encrypt:
+  shared:
+    private-key: ${PRIVATE_KEY_PATH:./keys/private.key}
+    public-key: ${PUBLIC_KEY_PATH:./keys/public.key}
+  db:
+    key: ${DB_KEY:./keys/db.key}
+server:
+  port: ${PORT:8083}
+spring:
+  jackson:
+    time-zone: UTC
+  datasource:
+    initialization-mode: always
+    platform: postgres
+    url: jdbc:postgresql://127.0.0.1:5432/config_service
+    username: postgres
+    password: password
+  jpa:
+    show_sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+      generate-ddl: true
+journal:
+  name: config-service.journal
+auth:
+  username: ${CONFIG_SERVICE_USERNAME:config_service}
+  password: ${CONFIG_SERVICE_PASSWORD:$2y$12$Sr9Zsb.eVzosnkwtOMDfjOVM6YqgPSk/6mpOrbaFXBDExiSVxZlmm} # password
+  roles: ADMIN
+endpoints:
+  users:
+    host: ${USERS_SERVICE_HOST:http://localhost:8082}/v1/user
+    username: ${USERS_SERVICE_USERNAME:user_service}
+    password: ${USERS_SERVICE_PASSWORD:password}

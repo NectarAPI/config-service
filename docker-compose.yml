@@ -1,0 +1,58 @@
+version: '3.3'
+services:
+  config-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: us-central1-docker.pkg.dev/involuted-earth-357912/config-service/config-service:0.9.3-alpha
+    container_name: config-service-local
+    restart: unless-stopped
+    tty: true
+    ports:
+            - 8083:8083
+    environment:
+      - PRIVATE_KEY_PATH=keys/private.key
+      - PUBLIC_KEY_PATH=keys/public.key
+      - DB_KEY=keys/db.key
+      - PORT=8083
+      - CONFIG_SERVICE_DB_HOST=config-service-db
+      - CONFIG_SERVICE_DB=config_service
+      - CONFIG_SERVICE_DB_USERNAME=config_service
+      - CONFIG_SERVICE_DB_PASSWORD=password
+      - CONFIG_SERVICE_USERNAME=config_service
+      - CONFIG_SERVICE_PASSWORD=$$2y$$12$$Sr9Zsb.eVzosnkwtOMDfjOVM6YqgPSk/6mpOrbaFXBDExiSVxZlmm
+      - USERS_SERVICE_HOST=user-service
+      - USERS_SERVICE_USERNAME=user_service
+      - USERS_SERVICE_PASSWORD=password
+    networks:
+      - app-web-network
+      - config-service-network
+    depends_on:
+      - config-service-db
+
+  config-service-db:
+    image: postgres:11.14-alpine
+    container_name: config-service-db-local
+    restart: unless-stopped
+    tty: true
+    ports:
+      - 5432
+    volumes:
+      - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+#      - config-service-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=config_service
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=config_service
+    networks:
+      - config-service-network
+
+#volumes:
+#  config-service-data:
+#     driver: local
+
+networks:
+  config-service-network:
+    driver: bridge
+  app-web-network:
+    driver: bridge
