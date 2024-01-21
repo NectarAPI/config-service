@@ -86,6 +86,11 @@ public class NativeConfig extends STSConfig {
         setIssuerIdentificationNo(issuerIdentificationNo);
     }
 
+    @Override
+    public String toString() {
+        return String.format("id: %d", id);
+    }
+
     public Config getConfig() {
         return config;
     }

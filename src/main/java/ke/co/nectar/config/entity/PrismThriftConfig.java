@@ -86,6 +86,11 @@ public class PrismThriftConfig extends STSConfig {
         setTariffIndex(tariffIndex);
     }
 
+    @Override
+    public String toString() {
+        return String.format("id: %d", id);
+    }
+
     public Config getConfig() {
         return config;
     }

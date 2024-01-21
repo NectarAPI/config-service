@@ -34,6 +34,12 @@ public class Pricing {
         setUpdatedAt(updatedAt);
     }
 
+    @Override
+    public String toString() {
+        return String.format("id: %d", id);
+    }
+
+
     public Long getId() {
         return id;
     }
