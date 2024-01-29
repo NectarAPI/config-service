@@ -13,9 +13,9 @@ spring:
   datasource:
     initialization-mode: always
     platform: postgres
-    url: jdbc:postgresql://127.0.0.1:5432/config_service
-    username: postgres
-    password: password
+    url: jdbc:postgresql://${CONFIG_SERVICE_DB_HOST:localhost:5432}/${CONFIG_SERVICE_DB:config_service}
+    username: ${CONFIG_SERVICE_DB_USERNAME:config_service}
+    password: ${CONFIG_SERVICE_DB_PASSWORD:password}
   jpa:
     show_sql: true
     properties:
